@@ -1,0 +1,8 @@
+[package]
+name = "interface_scraper"
+version = "0.1.0"
+authors = ["Benjamin Wenzel <b.wenzel@mail.de>"]
+
+[dependencies]
+lazy_static = "1.0.0"
+regex = "1.0.0"
