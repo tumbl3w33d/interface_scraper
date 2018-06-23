@@ -1,9 +1,11 @@
 #[macro_use]
 extern crate lazy_static;
+#[macro_use]
+extern crate getset;
 
-mod ifconfig;
-mod interface;
-mod netmask;
+pub mod ifconfig;
+pub mod interface;
+pub mod netmask;
 
 #[cfg(test)]
 mod tests {
@@ -11,6 +13,12 @@ mod tests {
 
     #[test]
     fn it_works() {
-        assert!(ifconfig::get_interfaces().unwrap().len() > 0)
+        let ifaces = ifconfig::get_interfaces();
+        assert!(ifaces.is_ok(), "No interfaces have been parsed");
+        let ifaces = ifaces.unwrap();
+        assert!(ifaces.len() > 0);
+        let first_iface = ifaces.first().unwrap();
+        assert!(first_iface.name() != "");
+        assert!(first_iface.netmask().is_some());
     }
 }

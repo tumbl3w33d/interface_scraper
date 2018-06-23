@@ -1,10 +1,12 @@
 
 use std::net::IpAddr;
 
-#[derive(Default, Clone)]
+#[derive(Default, Clone, Getters)]
 pub struct Interface {
+    #[get = "pub"]
     name: String,
     gateway: Option<IpAddr>,
+    #[get = "pub"]
     netmask: Option<IpAddr>,
     ip: Option<IpAddr>,
     dns1: Option<IpAddr>,
