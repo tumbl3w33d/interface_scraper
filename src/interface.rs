@@ -1,17 +1,24 @@
 
 use std::net::IpAddr;
 
-#[derive(Default, Clone, Getters)]
+#[derive(Default, Clone, Getters, Debug)]
 pub struct Interface {
     #[get = "pub"]
     name: String,
+    #[get = "pub"]
     gateway: Option<IpAddr>,
     #[get = "pub"]
     netmask: Option<IpAddr>,
+    #[get = "pub"]
     ip: Option<IpAddr>,
+    #[get = "pub"]
     dns1: Option<IpAddr>,
+    #[get = "pub"]
     dns2: Option<IpAddr>,
-    domain: Option<String>
+    #[get = "pub"]
+    domain: Option<String>,
+    #[get = "pub"]
+    is_wan_interface: bool
 }
 
 pub struct InterfaceBuilder {
@@ -21,6 +28,18 @@ pub struct InterfaceBuilder {
 impl Interface {
     pub fn builder() -> InterfaceBuilder {
         InterfaceBuilder::new()
+    }
+
+    pub fn as_wan_interface(&self) -> Interface {
+        let mut ret = self.clone();
+        ret.is_wan_interface = true;
+        ret
+    }
+
+    pub fn with_gateway(&self, gateway: IpAddr) -> Interface {
+        let mut ret = self.clone();
+        ret.gateway = Some(gateway);
+        ret
     }
 }
 
@@ -62,6 +81,11 @@ impl InterfaceBuilder {
 
     pub fn domain(&mut self, domain: String) -> &mut Self {
         self.iface.domain = Some(domain);
+        self
+    }
+
+    pub fn is_wan_interface(&mut self, is_wan_iface: bool) -> &mut Self {
+        self.iface.is_wan_interface = is_wan_iface;
         self
     }
 
